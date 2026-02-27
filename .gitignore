@@ -172,3 +172,12 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Swamiji-Tamil custom ignores
+dataset_export.tar.gz
+custom_dataset.tar.gz
+custom_dataset/
+custom_dataset_pinyin/
+custom_dataset_pinyin_pinyin
+ckpts/
+.DS_Store

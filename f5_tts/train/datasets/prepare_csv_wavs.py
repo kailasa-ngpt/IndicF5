@@ -24,7 +24,7 @@ from f5_tts.model.utils import (
 csv.field_size_limit(sys.maxsize)
 
 # PRETRAINED_VOCAB_PATH = files("f5_tts").joinpath("../../data/Emilia_ZH_EN_pinyin/vocab.txt")
-PRETRAINED_VOCAB_PATH = Path("/home/tts/ttsteam/repos/F5-TTS/ckpts/vocab.txt")
+PRETRAINED_VOCAB_PATH = Path("/Users/vember/.cache/huggingface/hub/models--ai4bharat--IndicF5/snapshots/b82d286220e3070e171f4ef4b4bd047b9a447c9a/checkpoints/vocab.txt")
 
 
 def is_csv_wavs_format(input_dataset_dir):
