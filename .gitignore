@@ -181,3 +181,7 @@ custom_dataset_pinyin/
 custom_dataset_pinyin_pinyin
 ckpts/
 .DS_Store
+samples/v2_jadavulagu.wav
+.gitignore
+samples/finetuned_final.wav
+samples/v2_50epoch.wav
