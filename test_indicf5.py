@@ -12,7 +12,7 @@ print("Generating speech...")
 # Generate speech
 audio = model(
     "வணக்கம்! எனக்கு தமிழ் நன்றாக பேச வரும். இது ஒரு சிறப்பான குரல் நகல்.", # "Hello! I can speak Tamil well. This is an excellent voice clone."
-    ref_audio_path="custom_prompts/tamil_male_reference_clipped.wav",
+    ref_audio_path="custom_prompts/tamil_male_reference_optimal.wav",
     ref_text="அந்தக் கிராமத்துல ஒரு சின்ன பையன் இருந்தான் அவன் பேரு கண்ணன் கண்ணனுக்கு எப்பவும் புதுசு புதுசா ஏதாச்சும் கத்துக்கணும்னு ரொம்ப ஆசை"
 )
 
