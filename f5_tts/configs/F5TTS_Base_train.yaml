@@ -3,7 +3,7 @@ hydra:
     dir: ckpts/${model.name}_${model.mel_spec.mel_spec_type}_${model.tokenizer}_${datasets.name}/${now:%Y-%m-%d}/${now:%H-%M-%S}
     
 datasets:
-  name: /Users/vember/Projects/Swamiji-Tamil/IndicF5/custom_dataset_pinyin  # absolute path to dataset
+  name: custom_dataset_pinyin  # relative path to dataset (use absolute path on RunPod)
   batch_size_per_gpu: 1024  # Reduced heavily to prevent SIGKILL 9 Out of Memory
   batch_size_type: frame  # "frame" or "sample"
   max_samples: 8  # reduced to 8
@@ -18,7 +18,7 @@ optim:
   bnb_optimizer: False  # use bnb 8bit AdamW optimizer or not
 
 model:
-  name: F5TTS_Small  # model name
+  name: F5TTS_Base  # model name
   tokenizer: pinyin  # tokenizer type
   tokenizer_path: None  # if tokenizer = 'custom', define the path to the tokenizer you want to use (should be vocab.txt)
   arch:

@@ -2,7 +2,7 @@
 set -e
 
 cd /workspace
-git clone https://github.com/ai4bharat/IndicF5.git
+git clone https://github.com/ananthgv-usk/IndicF5.git
 cd IndicF5
 
 # Install requirements
