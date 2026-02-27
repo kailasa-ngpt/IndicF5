@@ -1,9 +1,10 @@
-# training script.
-
 import os
 from importlib.resources import files
 
 import hydra
+import torch
+from safetensors.torch import load_file
+from huggingface_hub import hf_hub_download
 
 from f5_tts.model import CFM, DiT, Trainer, UNetT
 from f5_tts.model.dataset import load_dataset
@@ -38,6 +39,39 @@ def main(cfg):
         vocab_char_map=vocab_char_map,
     )
 
+    # LOAD PRETRAINED INDICF5 BEFORE TRAINING!
+    print("Downloading base model.safetensors from ai4bharat/IndicF5...")
+    ckpt_path = hf_hub_download(repo_id="ai4bharat/IndicF5", filename="model.safetensors")
+    print(f"Loading pretrained weights from {ckpt_path}...")
+    state_dict = load_file(ckpt_path)
+    
+    new_state_dict = {}
+    for k, v in state_dict.items():
+        if k.startswith("ema_model._orig_mod."):
+            new_state_dict[k.replace("ema_model._orig_mod.", "")] = v
+        elif k.startswith("model._orig_mod."):
+            new_state_dict[k.replace("model._orig_mod.", "")] = v
+        elif k.startswith("model."):
+            new_state_dict[k.replace("model.", "")] = v
+        else:
+            new_state_dict[k] = v
+
+    try:
+        model.load_state_dict(new_state_dict, strict=False)
+        print("Successfully injected IndicF5 pretrained weights into the Model!")
+    except RuntimeError as e:
+        print(f"Shape mismatch detected! Removing mismatched keys...")
+        model_state = model.state_dict()
+        for k in list(new_state_dict.keys()):
+            if k in model_state and new_state_dict[k].shape != model_state[k].shape:
+                print(f"Removing {k} due to shape mismatch: {new_state_dict[k].shape} vs {model_state[k].shape}")
+                del new_state_dict[k]
+        try:
+            model.load_state_dict(new_state_dict, strict=False)
+            print("Successfully injected IndicF5 pretrained weights after dropping mismatched embeddings!")
+        except Exception as e2:
+            print(f"Weight Injection Failed completely: {str(e2)[:150]}")
+
     # init trainer
     trainer = Trainer(
         model,
@@ -69,7 +103,6 @@ def main(cfg):
         num_workers=cfg.datasets.num_workers,
         resumable_with_seed=666,  # seed for shuffling dataset
     )
-
 
 if __name__ == "__main__":
     main()
